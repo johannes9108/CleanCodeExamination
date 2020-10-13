@@ -11,13 +11,19 @@ import application.ui.UI;
 
 public class MooLogic {
 
-	public void run(UI ui) {
+	private Controller controller;
+	
+	protected void setController(Controller controller) {
+		this.controller = controller;
+	}
+
+	public void run() {
 		int answer = JOptionPane.YES_OPTION;
 
 		// login
-		ui.addString("Enter your user name:\n");
-		String name = ui.getString();
-		int id = 0;
+		String currentPlayer = askForUsername();
+		
+//		int id = 0;
 //		Class.forName("com.mysql.jdbc.Driver");
 //		connection = DriverManager.getConnection("jdbc:mysql://localhost/Moo","root","root");			
 //		stmt = connection.createStatement();		
@@ -32,21 +38,23 @@ public class MooLogic {
 		
 		while (answer == JOptionPane.YES_OPTION) {
 			String goal = makeGoal();
-			ui.clear();
-			ui.addString("New game:\n");
+			newGameScreen();
+			printCurrentPlayer(currentPlayer);
 			//comment out or remove next line to play real games!
-			ui.addString("For practice, number is: " + goal + "\n");
-			String guess = ui.getString();
-			ui.addString(guess +"\n");
+			cheatSheet(goal);
+			String guess = getGuess();
+			//!!!!!!!ADDED DISPLAYPROGRESS FOR SPECIAL BEHAVIOR AT FIRST RUN
+			displayProgress(guess);
 			int nGuess = 1;
 			String bbcc = checkBC(goal, guess);
-			ui.addString(bbcc + "\n");
+			
+			displayProgress(bbcc);
 			while ( ! bbcc.equals("BBBB,")) {
 				nGuess++;
-				guess = ui.getString();
-				ui.addString(guess +"\n");
+				guess = getGuess();
+				displayProgress( guess);
 				bbcc = checkBC(goal, guess);
-				ui.addString(bbcc + "\n");
+				displayProgress(bbcc);
 			}
 //			int ok = stmt.executeUpdate("INSERT INTO results " + 
 //					"(result, player) VALUES (" + nGuess + ", " +	id + ")" );
@@ -55,7 +63,35 @@ public class MooLogic {
 					+ " guesses\nContinue?");
 		
 		}
-		ui.exit();		
+		uiExit();		
+	}
+
+	private void printCurrentPlayer(String currentPlayer) {
+		displayProgress("Player: " + currentPlayer);
+	}
+
+	private void uiExit() {
+		controller.uiExit();
+	}
+
+	private void cheatSheet( String goal) {
+		controller.cheatSheet(goal);
+	}
+
+	private void displayProgress( String msg) {
+		controller.displayProgress(msg);
+	}
+
+	private String getGuess() {
+		return controller.getGuess();
+	}
+
+	private void newGameScreen() {
+		controller.newGameScreen();
+	}
+
+	private String askForUsername() {
+		return controller.askForUserName();
 	}
 	
 	public static String makeGoal(){
