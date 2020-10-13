@@ -1,3 +1,4 @@
+package application.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -18,7 +19,7 @@ import javax.swing.KeyStroke;
 
 
 
-public class SimpleWindow  {
+public class SimpleWindow implements UI  {
 	private JFrame window;
 	private JTextArea text;
 	private JTextField inString;
@@ -69,6 +70,7 @@ public class SimpleWindow  {
 		}		
 	}
 	
+	@Override
 	public String getString(){
 		
 		try {
@@ -79,14 +81,17 @@ public class SimpleWindow  {
 		}
 	}
 	
+	@Override
 	public void addString(String s){
 		text.append(s);
 	}
 	
+	@Override
 	public void clear(){
 		text.setText("");
 	}
 	
+	@Override
 	public void exit() {
 		window.dispose();
 		System.exit(0);
