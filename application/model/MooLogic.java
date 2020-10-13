@@ -1,13 +1,8 @@
 package application.model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
 
-import application.ui.UI;
+import application.model.bo.Player;
 
 public class MooLogic {
 
@@ -23,38 +18,29 @@ public class MooLogic {
 		// login
 		String currentPlayer = askForUsername();
 		
-//		int id = 0;
-//		Class.forName("com.mysql.jdbc.Driver");
-//		connection = DriverManager.getConnection("jdbc:mysql://localhost/Moo","root","root");			
-//		stmt = connection.createStatement();		
-//		rs = stmt.executeQuery("select id,name from players where name = '" + name + "'");
-//		if (rs.next()) {
-//			id = rs.getInt("id");
-//		} else {
-//			gw.addString("User not in database, please register with admin");
-//			Thread.sleep(5000);
-//			gw.exit();
-//		}
+		Player player = controller.getPlayerByName(currentPlayer);
+		System.out.println(player);
+
 		
 		while (answer == JOptionPane.YES_OPTION) {
 			String goal = makeGoal();
 			newGameScreen();
 			printCurrentPlayer(currentPlayer);
 			//comment out or remove next line to play real games!
-			cheatSheet(goal);
+			printCheatSheet(goal);
 			String guess = getGuess();
 			//!!!!!!!ADDED DISPLAYPROGRESS FOR SPECIAL BEHAVIOR AT FIRST RUN
-			displayProgress(guess);
+			printCurrentProgress(guess);
 			int nGuess = 1;
 			String bbcc = checkBC(goal, guess);
 			
-			displayProgress(bbcc);
+			printCurrentProgress(bbcc);
 			while ( ! bbcc.equals("BBBB,")) {
 				nGuess++;
 				guess = getGuess();
-				displayProgress( guess);
+				printCurrentProgress( guess);
 				bbcc = checkBC(goal, guess);
-				displayProgress(bbcc);
+				printCurrentProgress(bbcc);
 			}
 //			int ok = stmt.executeUpdate("INSERT INTO results " + 
 //					"(result, player) VALUES (" + nGuess + ", " +	id + ")" );
@@ -67,18 +53,18 @@ public class MooLogic {
 	}
 
 	private void printCurrentPlayer(String currentPlayer) {
-		displayProgress("Player: " + currentPlayer);
+		printCurrentProgress("Player: " + currentPlayer);
 	}
 
 	private void uiExit() {
 		controller.uiExit();
 	}
 
-	private void cheatSheet( String goal) {
-		controller.cheatSheet(goal);
+	private void printCheatSheet( String goal) {
+		controller.printCheatSheet(goal);
 	}
 
-	private void displayProgress( String msg) {
+	private void printCurrentProgress( String msg) {
 		controller.displayProgress(msg);
 	}
 

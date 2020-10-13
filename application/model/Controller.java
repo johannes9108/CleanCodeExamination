@@ -1,5 +1,7 @@
 package application.model;
 
+import application.integration.DAO;
+import application.model.bo.Player;
 import application.ui.UI;
 
 public class Controller {
@@ -7,11 +9,13 @@ public class Controller {
 	private UI ui;
 	// EXTRACT TILL GENERISK LOGIKKOMPONENT
 	private MooLogic logic;
+	private DAO dao;
 	
-	public Controller(UI ui, MooLogic logic) {
+	public Controller(UI ui, MooLogic logic,DAO dao) {
 		this.ui = ui;
 		this.logic = logic;
 		logic.setController(this);
+		this.dao = dao;
 	}
 
 	public void startApplication() {
@@ -40,12 +44,16 @@ public class Controller {
 		ui.addString(msg + "\n");		
 	}
 
-	public void cheatSheet(String goal) {
+	public void printCheatSheet(String goal) {
 		ui.addString("For practice, number is: " + goal + "\n");		
 	}
 
 	public void uiExit() {
 		ui.exit();		
+	}
+
+	public Player getPlayerByName(String currentPlayer) {
+		return dao.getPlayerByName(currentPlayer).get();
 	}
 
 }

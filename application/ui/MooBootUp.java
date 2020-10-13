@@ -9,21 +9,18 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import application.integration.DAO;
+import application.integration.MooDAOJDBCImpl;
 import application.model.Controller;
 import application.model.MooLogic;
 
 public class MooBootUp {
 
-	
-		static Connection connection;
-		static Statement stmt;
-		static ResultSet rs;
-		static UI gw;
-
 		public static void main(String[] args) throws ClassNotFoundException, SQLException, InterruptedException {
 			UI ui = new SimpleWindow("Moo");
 			MooLogic logic = new MooLogic();
-			Controller controller = new Controller(ui, logic);
+			DAO dao = new MooDAOJDBCImpl();
+			Controller controller = new Controller(ui, logic, dao);
 			controller.startApplication();
 			
 		}
