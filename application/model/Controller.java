@@ -1,5 +1,7 @@
 package application.model;
 
+import java.util.List;
+
 import application.integration.DAO;
 import application.model.bo.Player;
 import application.ui.UI;
@@ -58,6 +60,10 @@ public class Controller {
 
 	public void publishResult(int guesses, int id) {
 		dao.updateResults(guesses,id);
+	}
+
+	public String getTopTen() {
+		return dao.getTop10();
 	}
 
 }

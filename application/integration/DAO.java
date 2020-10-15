@@ -9,7 +9,7 @@ public interface DAO {
 	
 	public Optional<Player> getPlayerById(int id);
 	public Optional<Player> getPlayerByName(String name);
-	public List<Player> getTop10();
+	public String getTop10();
 	public void updateResults(int guesses, int id);
 	
 }

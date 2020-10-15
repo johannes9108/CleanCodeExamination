@@ -43,12 +43,17 @@ public class MooLogic {
 				printCurrentProgress(bbcc);
 			}
 			publishResult(nGuess,player.getId());
-//			showTopTen();
+			printTopTen();
 			answer = JOptionPane.showConfirmDialog(null, "Correct, it took " + nGuess
 					+ " guesses\nContinue?");
 		
 		}
 		uiExit();		
+	}
+
+	private void printTopTen() {
+		String topTenMsg =  controller.getTopTen();
+		controller.displayProgress(topTenMsg);
 	}
 
 	private void publishResult(int guesses,int id) {
