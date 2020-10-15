@@ -56,4 +56,8 @@ public class Controller {
 		return dao.getPlayerByName(currentPlayer).get();
 	}
 
+	public void publishResult(int guesses, int id) {
+		dao.updateResults(guesses,id);
+	}
+
 }

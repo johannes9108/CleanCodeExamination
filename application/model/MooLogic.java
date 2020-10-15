@@ -42,14 +42,17 @@ public class MooLogic {
 				bbcc = checkBC(goal, guess);
 				printCurrentProgress(bbcc);
 			}
-//			int ok = stmt.executeUpdate("INSERT INTO results " + 
-//					"(result, player) VALUES (" + nGuess + ", " +	id + ")" );
+			publishResult(nGuess,player.getId());
 //			showTopTen();
 			answer = JOptionPane.showConfirmDialog(null, "Correct, it took " + nGuess
 					+ " guesses\nContinue?");
 		
 		}
 		uiExit();		
+	}
+
+	private void publishResult(int guesses,int id) {
+		controller.publishResult(guesses,id);
 	}
 
 	private void printCurrentPlayer(String currentPlayer) {

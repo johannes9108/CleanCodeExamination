@@ -21,6 +21,15 @@ public class Player {
 	public String toString() {
 		return "Player [id=" + id + ", name=" + name + ", highscores=" + highscores + "]";
 	}
+	public int getId() {
+		return id;
+	}
+	public String getName() {
+		return name;
+	}
+	public List<Integer> getHighscores() {
+		return highscores;
+	}
 	
 	
 	
