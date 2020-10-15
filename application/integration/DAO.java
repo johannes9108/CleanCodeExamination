@@ -10,6 +10,6 @@ public interface DAO {
 	public Optional<Player> getPlayerById(int id);
 	public Optional<Player> getPlayerByName(String name);
 	public String getTop10();
-	public void updateResults(int guesses, int id);
+	public void publishNewResult(int result, int id);
 	
 }

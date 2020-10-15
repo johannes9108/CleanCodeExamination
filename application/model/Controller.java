@@ -59,7 +59,7 @@ public class Controller {
 	}
 
 	public void publishResult(int guesses, int id) {
-		dao.updateResults(guesses,id);
+		dao.publishNewResult(guesses,id);
 	}
 
 	public String getTopTen() {

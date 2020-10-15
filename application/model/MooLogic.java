@@ -24,21 +24,36 @@ public class MooLogic {
 		
 		while (answer == JOptionPane.YES_OPTION) {
 			String goal = makeGoal();
+			String bbcc = "";
 			newGameScreen();
 			printCurrentPlayer(currentPlayer);
 			//comment out or remove next line to play real games!
 			printCheatSheet(goal);
 			String guess = getGuess();
 			//!!!!!!!ADDED DISPLAYPROGRESS FOR SPECIAL BEHAVIOR AT FIRST RUN
+			
 			printCurrentProgress(guess);
 			int nGuess = 1;
-			String bbcc = checkBC(goal, guess);
 			
-			printCurrentProgress(bbcc);
+			// Skipping if guess is too short
+			if(guessIsToShort(guess)) {
+				nGuess--;
+				
+			}else {
+				bbcc = checkBC(goal, guess);	
+				printCurrentProgress(bbcc);
+			}
+			
+			
 			while ( ! bbcc.equals("BBBB,")) {
 				nGuess++;
 				guess = getGuess();
 				printCurrentProgress( guess);
+				// Skipping if guess is too short
+				if(guessIsToShort(guess)) {
+					nGuess--;
+					continue;
+				}
 				bbcc = checkBC(goal, guess);
 				printCurrentProgress(bbcc);
 			}
@@ -49,6 +64,14 @@ public class MooLogic {
 		
 		}
 		uiExit();		
+	}
+
+	private boolean guessIsToShort(String guess) {
+		if(guess.length()<4) {
+			printCurrentProgress("Use format XXXX!");
+			return true;
+		}
+		return false;
 	}
 
 	private void printTopTen() {
@@ -88,7 +111,7 @@ public class MooLogic {
 		return controller.askForUserName();
 	}
 	
-	public static String makeGoal(){
+	private static String makeGoal(){
 		String goal = "";
 		for (int i = 0; i < 4; i++){
 			int random = (int) (Math.random() * 10);
@@ -102,7 +125,7 @@ public class MooLogic {
 		return goal;
 	}
 	
-	public static String checkBC(String goal, String guess) {
+	private static String checkBC(String goal, String guess) {
 		int cows = 0, bulls = 0;
 		for (int i = 0; i < 4; i++){
 			for (int j = 0; j < 4; j++ ) {
@@ -127,43 +150,5 @@ public class MooLogic {
 	
 	}
 	
-	static class PlayerAverage {
-		String name;
-		double average;
-		public PlayerAverage(String name, double average) {
-			this.name = name;
-			this.average = average;
-		}	
-	}
-	
-//	static void showTopTen() throws SQLException {
-//		ArrayList<PlayerAverage> topList = new ArrayList<>();
-//		Statement stmt2 = connection.createStatement();
-//		ResultSet rs2;
-//		rs = stmt.executeQuery("select * from players");
-//		while(rs.next()) {
-//			int id = rs.getInt("id");
-//			String name = rs.getString("name");
-//			rs2 = stmt2.executeQuery("select * from results where player = "+ id );
-//			int nGames = 0;
-//			int totalGuesses = 0;
-//			while (rs2.next()) {
-//				nGames++;
-//				totalGuesses += rs2.getInt("result");
-//			}
-//			if (nGames > 0) {
-//				topList.add(new PlayerAverage(name, (double)totalGuesses/nGames));
-//			}
-//			
-//		}
-//		ui.addString("Top Ten List\n    Player     Average\n");
-//		int pos = 1;
-//		topList.sort((p1,p2)->(Double.compare(p1.average, p2.average)));
-//		for (PlayerAverage p : topList) {
-//			ui.addString(String.format("%3d %-10s%5.2f%n", pos, p.name, p.average));
-//			if (pos++ == 10) break;
-//		}
-//
-//	}
 
 }
