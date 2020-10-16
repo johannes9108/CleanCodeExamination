@@ -10,4 +10,8 @@ public interface UI {
 
 	void exit();
 
+	int optionPaneAnswer();
+
+	int keepPlayingDialog(String msg);
+
 }

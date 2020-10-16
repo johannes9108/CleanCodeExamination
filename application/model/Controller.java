@@ -1,6 +1,6 @@
 package application.model;
 
-import java.util.List;
+import javax.swing.JOptionPane;
 
 import application.integration.DAO;
 import application.model.bo.Player;
@@ -9,48 +9,93 @@ import application.ui.UI;
 public class Controller {
 
 	private UI ui;
-	// EXTRACT TILL GENERISK LOGIKKOMPONENT
-	private MooLogic logic;
+	private AbstractGame game;
 	private DAO dao;
 	
-	public Controller(UI ui, MooLogic logic,DAO dao) {
+	private Player currentPlayer;
+	
+	
+	public Controller(UI ui, AbstractGame game,DAO dao) {
 		this.ui = ui;
-		this.logic = logic;
-		logic.setController(this);
+		this.game = game;
 		this.dao = dao;
 	}
 
 	public void startApplication() {
-		logic.run();
+		
+			int keepPlaying = ui.optionPaneAnswer();
+			login();
+			while (keepPlaying == ui.optionPaneAnswer()) {
+				setUp();
+				gameLoop();
+				showTopTen();
+				keepPlaying = ui.keepPlayingDialog("Correct, it took " + game.getGuesses()
+						+ " guesses\nContinue?");
+			}
+			uiExit();		
+	}
+
+	private void showTopTen() {
+		publishResult(game.getGuesses(),currentPlayer.getId());
+		printMessage(getTopTen());		
+	}
+
+	private void gameLoop() {
+		String progress = "";
+		do {
+			String guess = getGuess();
+			if(game.validate(guess)) {
+				int guesses = game.getGuesses();
+				game.setGuesses(guesses+1);
+				printMessage(guess);
+			}
+			else {
+				printMessage("Invalid format");
+				continue;
+			}
+			progress = game.generateProgress(guess);
+			printMessage(progress);
+		}while (!progress.equals( game.getWinCondition()));
+		
+	}
+	
+	private void setUp() {
+		game.generateAnswer();
+		newGameScreen();
+		printMessage(currentPlayer.getName());
+		//comment out or remove next line to play real games!
+		printMessage("For practice, number is: " + game.getGoal());
+	}
+	
+
+	private void login() {
+		String playerName = askForUserName();
+		currentPlayer = getPlayerByName(playerName);
 		
 	}
 
-	public String askForUserName() {
+	private String askForUserName() {
 		ui.addString("Enter your user name:\n");
 		String name = ui.getString();
 		return name;
 	}
 
-	public void newGameScreen() {
+	private void newGameScreen() {
 		ui.clear();
 		ui.addString("New game:\n");		
 	}
 
-	public String getGuess() {
+	private String getGuess() {
 		String guess = ui.getString();
 //		ui.addString(guess +"\n");
 		return guess;
 	}
 
-	public void displayProgress(String msg) {
+	private void printMessage(String msg) {
 		ui.addString(msg + "\n");		
 	}
 
-	public void printCheatSheet(String goal) {
-		ui.addString("For practice, number is: " + goal + "\n");		
-	}
-
-	public void uiExit() {
+	private void uiExit() {
 		ui.exit();		
 	}
 
@@ -58,12 +103,12 @@ public class Controller {
 		return dao.getPlayerByName(currentPlayer).get();
 	}
 
-	public void publishResult(int guesses, int id) {
+	private void publishResult(int guesses, int id) {
 		dao.publishNewResult(guesses,id);
 	}
 
-	public String getTopTen() {
+	private String getTopTen() {
 		return dao.getTop10();
 	}
-
+	
 }

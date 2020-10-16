@@ -11,6 +11,7 @@ import java.util.concurrent.BlockingQueue;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -96,6 +97,15 @@ public class SimpleWindow implements UI  {
 		window.dispose();
 		System.exit(0);
 	}
-	
+
+	@Override
+	public int optionPaneAnswer() {
+		return JOptionPane.YES_OPTION;
+	}
+
+	@Override
+	public int keepPlayingDialog(String msg) {
+		return JOptionPane.showConfirmDialog(null, msg);
+	}
 	
 }
