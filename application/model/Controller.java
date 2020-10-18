@@ -1,8 +1,8 @@
 package application.model;
 
-import javax.swing.JOptionPane;
+import java.util.Optional;
 
-import application.integration.DAO;
+import application.integration.AbstractGameDAO;
 import application.model.bo.Player;
 import application.ui.UI;
 
@@ -10,12 +10,12 @@ public class Controller {
 
 	private UI ui;
 	private AbstractGame game;
-	private DAO dao;
+	private AbstractGameDAO dao;
 	
 	private Player currentPlayer;
 	
 	
-	public Controller(UI ui, AbstractGame game,DAO dao) {
+	public Controller(UI ui, AbstractGame game,AbstractGameDAO dao) {
 		this.ui = ui;
 		this.game = game;
 		this.dao = dao;
@@ -24,7 +24,7 @@ public class Controller {
 	public void startApplication() {
 		
 			int keepPlaying = ui.optionPaneAnswer();
-			login();
+			
 			while (keepPlaying == ui.optionPaneAnswer()) {
 				setUp();
 				gameLoop();
@@ -60,6 +60,7 @@ public class Controller {
 	}
 	
 	private void setUp() {
+		while(!login().isPresent());
 		game.generateAnswer();
 		newGameScreen();
 		printMessage(currentPlayer.getName());
@@ -68,10 +69,14 @@ public class Controller {
 	}
 	
 
-	private void login() {
+	private Optional<Player> login() {
 		String playerName = askForUserName();
-		currentPlayer = getPlayerByName(playerName);
-		
+		Optional<Player> player = getPlayerByName(playerName);
+		if(player.isPresent())
+			currentPlayer = player.get();
+		else
+			printMessage("Couldn't find player");
+		return player;
 	}
 
 	private String askForUserName() {
@@ -99,12 +104,12 @@ public class Controller {
 		ui.exit();		
 	}
 
-	public Player getPlayerByName(String currentPlayer) {
-		return dao.getPlayerByName(currentPlayer).get();
+	public Optional<Player> getPlayerByName(String currentPlayer) {
+		return dao.getPlayerByName(currentPlayer);
 	}
 
 	private void publishResult(int guesses, int id) {
-		dao.publishNewResult(guesses,id);
+		dao.insertNewResult(guesses,id);
 	}
 
 	private String getTopTen() {
