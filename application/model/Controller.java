@@ -61,6 +61,7 @@ public class Controller {
 	
 	private void setUp() {
 		while(!login().isPresent());
+		game.setGuesses(0);
 		game.generateAnswer();
 		newGameScreen();
 		printMessage(currentPlayer.getName());
