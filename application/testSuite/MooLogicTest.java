@@ -64,10 +64,6 @@ class MooLogicTest {
 		assertEquals("BBBB,",gameLogic.generateProgress("1234"));
 	}
 	
-	@Test
-	void test() {
-		
-	}
 	
 	
 	

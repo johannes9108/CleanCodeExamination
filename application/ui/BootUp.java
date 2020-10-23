@@ -15,19 +15,8 @@ public class BootUp {
 
 		public static void main(String[] args) throws ClassNotFoundException, SQLException, InterruptedException {
 			UI ui = new SimpleWindow("Game");
-			String gameChoice = "";
-			do {
-				ui.addString("Which game you want to play:\nmoo/number\n");
-				gameChoice = ui.getString();
-				gameChoice.toLowerCase();
-				
-			}while(!(gameChoice.equals("moo") || gameChoice.equals("number")));
-			ui.clear();
-			AbstractGame game = new NumberGuessGame();
-			AbstractGameDAO dao = new NumberGameDAOJDBCImpl();
-			Controller controller = new Controller(ui, game, dao);
+			Controller controller = GameSelector.gameSelector(ui);
 			controller.startApplication();
-			
 		}
 		
 		

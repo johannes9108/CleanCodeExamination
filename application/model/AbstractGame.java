@@ -1,6 +1,6 @@
 package application.model;
 
-public abstract class AbstractGame{
+public abstract class AbstractGame implements GameLogic{
 	
 	protected String goal = "";
 	private int guesses = 0;
@@ -20,10 +20,6 @@ public abstract class AbstractGame{
 	public void setGuesses(int guesses) {
 		this.guesses = guesses;
 	}
-	
-	public abstract void generateAnswer();
-	public abstract String generateProgress(String guess);
-	public abstract boolean validate(String guess);
-	
+
 
 }

@@ -28,15 +28,15 @@ public class Controller {
 			while (keepPlaying == ui.optionPaneAnswer()) {
 				setUp();
 				gameLoop();
-				showTopTen();
+				handleResult();
 				keepPlaying = ui.keepPlayingDialog("Correct, it took " + game.getGuesses()
 						+ " guesses\nContinue?");
 			}
 			uiExit();		
 	}
 
-	private void showTopTen() {
-		publishResult(game.getGuesses(),currentPlayer.getId());
+	private void handleResult() {
+		saveResult(game.getGuesses(),currentPlayer.getId());
 		printMessage(getTopTen());		
 	}
 
@@ -109,7 +109,7 @@ public class Controller {
 		return dao.getPlayerByName(currentPlayer);
 	}
 
-	private void publishResult(int guesses, int id) {
+	private void saveResult(int guesses, int id) {
 		dao.insertNewResult(guesses,id);
 	}
 
