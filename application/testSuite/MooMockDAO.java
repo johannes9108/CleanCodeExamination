@@ -1,17 +1,25 @@
 package application.testSuite;
 
+import java.util.List;
+import java.util.Optional;
+
 import application.integration.AbstractGameDAO;
+import application.model.PlayerAverage;
 
 public class MooMockDAO extends AbstractGameDAO {
 
 	@Override
-	public String getTop10() {
-		return "Top 10: ";
+	public Optional<List<PlayerAverage>> getTop10() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void insertNewResult(int result, int id) {
-		
+	public boolean insertNewResult(int result, int id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
+
+	
 
 }

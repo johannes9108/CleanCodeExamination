@@ -1,5 +1,6 @@
 package application.model;
 
+import java.util.List;
 import java.util.Optional;
 
 import application.integration.AbstractGameDAO;
@@ -114,7 +115,20 @@ public class Controller {
 	}
 
 	private String getTopTen() {
-		return dao.getTop10();
+		Optional<List<PlayerAverage>> daoResult = dao.getTop10();
+		if(daoResult.isPresent()) {
+			StringBuilder builder = new StringBuilder();
+			int n = 1;
+			for(PlayerAverage pAvg: daoResult.get()) {
+				builder.append("#"+ n++ +":"
+						+ pAvg.name + " " + pAvg.average + "\n");
+			}
+			return builder.toString();
+		}
+		else {
+			return "Error fetching Top 10";
+		}
+		
 	}
 	
 }

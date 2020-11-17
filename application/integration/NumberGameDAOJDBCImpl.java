@@ -1,15 +1,19 @@
 package application.integration;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import application.model.PlayerAverage;
 
 public class NumberGameDAOJDBCImpl extends AbstractGameDAO {
 	
 	
 
 	@Override
-	public String getTop10() {
-		StringBuilder builder = new StringBuilder();
-		int counter = 1;
+	public Optional<List<PlayerAverage>> getTop10() {
+		List<PlayerAverage> averageList = new ArrayList<PlayerAverage>();
 		try {
 			stmt = connection.prepareStatement("SELECT name,avg(result) as average FROM players\r\n"
 					+ "join numberGame_results\r\n"
@@ -19,25 +23,28 @@ public class NumberGameDAOJDBCImpl extends AbstractGameDAO {
 					+ "limit 10;");
 			rs = stmt.executeQuery();
 			while(rs.next()) {
-				builder.append(counter++ +":" + rs.getString(1) + " " + rs.getDouble(2)+"\n");
+				averageList.add(new PlayerAverage(rs.getString(1), rs.getDouble(2)));
 			}
 		}catch(SQLException e) {
-			return "";
+			return Optional.empty();
 		}
-		return builder.toString();
+		return Optional.of(averageList);
+	
+	
 	}
 
 	@Override
-	public void insertNewResult(int result, int id) {
+	public boolean insertNewResult(int result, int id) {
 try {
 			
 			stmt = connection.prepareStatement("INSERT INTO numberGame_results (result, player) VALUES (?, ?)" );
 			stmt.setInt(1, result);
 			stmt.setInt(2, id);
 			stmt.executeUpdate();
+			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 	}
 

@@ -5,8 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import application.model.PlayerAverage;
 import application.model.bo.Player;
 
 public abstract class AbstractGameDAO implements DAO{
@@ -14,6 +17,7 @@ public abstract class AbstractGameDAO implements DAO{
 	static Connection connection;
 	static PreparedStatement stmt;
 	static ResultSet rs;
+	
 	
 	{
 		try {
@@ -49,8 +53,34 @@ public abstract class AbstractGameDAO implements DAO{
 		}
 	}
 	
+//	private Optional<Player> fetchExistingPlayer(int id, String name) throws SQLException {
+//		ArrayList<Integer> highscores = new ArrayList<Integer>();
+//		rs= stmt.executeQuery("select result from results where player = '"+id+"'");
+//		while(rs.next()) {
+//			int result = rs.getInt(1);
+//			highscores.add(result);
+//		}
+//		
+//		return Optional.of(new Player(id,name));
+//		
+//		
+//	}
 	
-	public abstract String getTop10();
-	public abstract void insertNewResult(int result, int id);
+
+//	public Optional<Player> createNewPlayer(String name){
+//		name = name.toLowerCase();
+//		try {
+//			int res = stmt.executeUpdate("INSERT INTO `moo`.`players` ( `name`) VALUES ('"+name + "')");
+//			return getPlayerByName(name);
+//			
+//		}catch(SQLException e) {
+//			return Optional.empty();
+//		}
+//	
+//	}
+	
+	
+	public abstract Optional<List<PlayerAverage>> getTop10();
+	public abstract boolean insertNewResult(int result, int id);
 	
 }
